@@ -1,14 +1,18 @@
-'use strict';
+const lorem = require("lorem-ipsum");
+const words = require("./words");
+const render = require("./render");
 
-module.exports.hello = async (event, context) => {
+module.exports.ipsum = async (event, context) => {
+  const generatedLorem = lorem({
+    words,
+    count: 50,
+  });
+
   return {
     statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
-    }),
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+    },
+    body: render(generatedLorem),
   };
-
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
 };
